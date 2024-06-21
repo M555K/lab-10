@@ -1,6 +1,7 @@
 package com.company.dto;
 
 import com.company.enums.EducationLevel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class TeacherDTO {
     private String phoneNumber;
     private String email;
     private String username;
-
+    @JsonIgnore
     private String password;
 
     private LocalDate birthday;
