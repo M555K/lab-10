@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(url="http://api.weatherstack.com", name="WEATHER-CLIENT")
 public interface WeatherClient {
     @GetMapping("/current")
-    ResponseWeather getTemperature(@RequestParam("access_key")  String key, @RequestParam String city);
+    ResponseWeather getTemperature(@RequestParam("access_key")  String key, @RequestParam("query") String city);
 
 }

@@ -24,4 +24,6 @@ public class WeatherServiceImpl implements WeatherService {
         ResponseWeather result =  weatherClient.getTemperature(key,city);
         return result !=null ? result.getCurrent().getTemperature() : null;
     }
+
+
 }
