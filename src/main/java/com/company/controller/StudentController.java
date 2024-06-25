@@ -26,7 +26,12 @@ public class StudentController {
      */
     @GetMapping
     public ResponseEntity<ResponseWrapper> getAllStudents() {
-        return ResponseEntity.ok(new ResponseWrapper("Students are successfully retrieved.",HttpStatus.OK.value(),studentService.findAll()));
+        ResponseWrapper response = ResponseWrapper.builder()
+                .success(true)
+                .message("Students are successfully retrieved.")
+                .code(HttpStatus.OK.value())
+                .data(studentService.findAll()).build();
+        return ResponseEntity.ok(response);
     }
     /*
           Endpoint: /api/v1/student
@@ -40,9 +45,12 @@ public class StudentController {
     */
     @PostMapping
     private ResponseEntity<ResponseWrapper> createStudent(@RequestBody StudentDTO studentDTO){
-        studentService.createStudent(studentDTO);
-        ResponseWrapper student = new ResponseWrapper("Student is successfully created.",HttpStatus.CREATED.value(), studentDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(student);
+       StudentDTO createdStudent= studentService.createStudent(studentDTO);
+        ResponseWrapper student =  ResponseWrapper.builder()
+                .message("Student is successfully created.")
+                .code(HttpStatus.CREATED.value())
+                .data(createdStudent).build();
+        return ResponseEntity.ok(student);
     }
 
 }

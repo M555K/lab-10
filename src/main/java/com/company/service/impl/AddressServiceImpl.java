@@ -1,10 +1,12 @@
 package com.company.service.impl;
 
+import com.company.client.WeatherClient;
 import com.company.dto.AddressDTO;
 import com.company.entity.Address;
 import com.company.exception.NotFoundException;
 import com.company.repository.AddressRepository;
 import com.company.service.AddressService;
+import com.company.service.WeatherService;
 import com.company.util.MapperUtil;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,13 @@ public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
     private final MapperUtil mapperUtil;
+    private final WeatherService weatherService;
 
-    public AddressServiceImpl(AddressRepository addressRepository, MapperUtil mapperUtil) {
+
+    public AddressServiceImpl(AddressRepository addressRepository, MapperUtil mapperUtil, WeatherService weatherService) {
         this.addressRepository = addressRepository;
         this.mapperUtil = mapperUtil;
+        this.weatherService = weatherService;
     }
 
     @Override
@@ -25,7 +30,9 @@ public class AddressServiceImpl implements AddressService {
         Address foundAddress = addressRepository.findByAddressNo(addressNo)
                 .orElseThrow(() -> new NotFoundException("No Address Found!"));
 
+
         AddressDTO addressDTO = mapperUtil.convert(foundAddress, new AddressDTO());
+        addressDTO.setCurrentTemperature(weatherService.getCurrentTemperature(addressDTO.getCity()));
 
         return addressDTO;
     }

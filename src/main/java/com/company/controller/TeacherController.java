@@ -26,7 +26,9 @@ public class TeacherController {
         */
     @GetMapping
     public ResponseEntity<ResponseWrapper> getAllTeachers() {
-        return ResponseEntity.ok(new ResponseWrapper(teacherService.findAll()));
+        ResponseWrapper response = ResponseWrapper.builder()
+                .data(teacherService.findAll()).build();
+        return ResponseEntity.ok(response);
     }
 
         /*
@@ -41,8 +43,12 @@ public class TeacherController {
         */
         @GetMapping("/{username}")
         public ResponseEntity<ResponseWrapper> getTeacherByUsername(@PathVariable("username") String username) {
-
-            return ResponseEntity.ok(new ResponseWrapper("Teacher is successfully retrieved.",HttpStatus.OK.value(),teacherService.findByUsername(username)));
+            ResponseWrapper responseWrapper = ResponseWrapper.builder()
+                    .success(true)
+                    .message("Teacher is successfully retrieved.")
+                    .code(HttpStatus.OK.value())
+                    .data(teacherService.findByUsername(username)).build();
+            return ResponseEntity.ok(responseWrapper);
         }
        /*
            Endpoint: /api/v1/teacher
@@ -57,9 +63,13 @@ public class TeacherController {
      */
     @PostMapping()
     public ResponseEntity<ResponseWrapper> createTeacher( @RequestBody TeacherDTO teacherDTO){
-        teacherService.createTeacher(teacherDTO);
+        ResponseWrapper responseWrapper = ResponseWrapper.builder()
+                .success(true)
+                .message("Teacher is successfully retrieved.")
+                .code(HttpStatus.CREATED.value())
+                .data(teacherDTO).build();
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("teacherUsername",teacherDTO.getUsername()).body(new ResponseWrapper("Teacher is successfully created.",HttpStatus.CREATED.value(),teacherDTO));
+                .header("teacherUsername",teacherDTO.getUsername()).body(responseWrapper);
     }
 
 }
